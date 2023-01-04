@@ -15,26 +15,21 @@ int main()
 
     //    fgets(text,LINE,stdin);
 
-    FILE *fp = fopen("input.txt","r");
-    if (fp == NULL)
-    {
-        return 0;
-    }
 
-    get_line_file(buffer_line, fp);
+    get_line_file(buffer_line);
     place_in_string = get_word_string(buffer_line, key_word, place_in_string);
     get_word_string(buffer_line, char_command, place_in_string);
 
     // printf("key word = %s\nchar command = %s\n", key_word, char_command);
 
-    ch = fgetc(fp);
+    ch = fgetc(stdin);
 
     if (char_command[0] == 'a')
     {
         different_letters = 0;
         while(ch!=EOF)
         {
-            ch = get_line_file(buffer_line, fp);
+            ch = get_line_file(buffer_line);
             // printf("buffer = %s\n", buffer_line);
             place_in_string = 0;
             while(place_in_string<=strlen(buffer_line))
@@ -68,19 +63,19 @@ int main()
 
 
 
-char get_line_file(char* buffer_line, FILE* fp)
+char get_line_file(char* buffer_line)
 {
     int i = 0;
-    char ch = fgetc(fp);
+    char ch = fgetc(stdin);
     while((ch!='\n')&&(ch!='\r')&&(ch != EOF))
     {
         *(buffer_line + i) = ch;
         i++;
-        ch = fgetc(fp);
+        ch = fgetc(stdin);
     }
     if(ch=='\r')
     {
-        ch = fgetc(fp);
+        ch = fgetc(stdin);
     }
     *(buffer_line + i) = '\0';
     return ch;
@@ -106,18 +101,18 @@ int get_word_string(char* buffer_line, char* buffer_word, int place_in_string)
     return i;
 }
 
-char get_word_file(FILE* fp, char* buffer_word)
+char get_word_file(char* buffer_word)
 {
     int i = 0;
     memset(buffer_word, '\0', WORD);
-    char ch = fgetc(fp);
+    char ch = fgetc(stdin);
 
     while ((ch!=' ')&&(ch!='\t')&&(ch!='\r')&&(ch!='\n')&&(ch!=EOF))
     {
           
         *(buffer_word+i) = ch;  
         i++;
-        ch = fgetc(fp);
+        ch = fgetc(stdin);
     }    
     return ch;
 }
