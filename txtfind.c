@@ -33,6 +33,7 @@ int main()
                 }
             }
         } 
+        printf("\n");
     }
     else if (char_command[0] == 'b')
     {
@@ -48,9 +49,10 @@ int main()
                 }
             }
 
-        }        
+        } 
+        // printf("\n");       
     }
-    printf("\n");
+    
 }
 
 
@@ -90,23 +92,6 @@ int get_word_string(char* line, char* word, int place_in_string)
     *(word + (j-1)) = '\0';
     return i;
 }
-
-char get_word_file(char* buffer_word)
-{
-    int i = 0;
-    memset(buffer_word, '\0', WORD);
-    char ch = fgetc(stdin);
-
-    while ((ch!=' ')&&(ch!='\t')&&(ch!='\r')&&(ch!='\n')&&(ch!=EOF))
-    {
-          
-        *(buffer_word+i) = ch;  
-        i++;
-        ch = fgetc(stdin);
-    }    
-    return ch;
-}
-
 
 int sub(char* source, char* word_under_test)
 {
