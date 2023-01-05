@@ -9,6 +9,7 @@ int main()
     char key_word[WORD] = {"\0"};
     char char_command[2] = {"\0"};
     int place_in_string = 0;
+    int is_first = TRUE;
     
     fgets(buffer_line,LINE, stdin);
     place_in_string = get_word_string(buffer_line, buffer_word, place_in_string);
@@ -28,8 +29,18 @@ int main()
                 place_in_string = get_word_string(buffer_line, buffer_word, place_in_string);
                 if(sub(key_word, buffer_word) == TRUE)
                 {
-                    printf("%s", buffer_line);
-                    break;
+                    if(is_first == TRUE)
+                    {
+                        *(buffer_line + strlen(buffer_line)-1) = '\0';
+                        printf("%s", buffer_line);
+                        is_first = FULSE;
+                    }
+                    else
+                    {
+                        *(buffer_line + strlen(buffer_line)-1) = '\0';
+                        printf("\n%s", buffer_line);
+                        break;
+                    }
                 }
             }
         } 
@@ -53,26 +64,6 @@ int main()
     
 }
 
-
-
-char get_line_file(char* buffer_line)
-{
-    int i = 0;
-    char ch = fgetc(stdin);
-    while((ch!='\n')&&(ch!='\r')&&(ch != EOF))
-    {
-        *(buffer_line + i) = ch;
-        i++;
-        ch = fgetc(stdin);
-    }
-    if(ch=='\r')
-    {
-        ch = fgetc(stdin);
-    }
-    *(buffer_line + i) = '\0';
-    return ch;
-}
-
 int get_word_string(char* line, char* word, int place_in_string)
 {
     int i = place_in_string;
@@ -88,6 +79,7 @@ int get_word_string(char* line, char* word, int place_in_string)
         j++;
     }
     *(word + (j-1)) = '\0';
+    // printf("%s, %ld\n", word, strlen(word));
     return i;
 }
 
