@@ -1,64 +1,56 @@
 #include <stdio.h>
 #include <string.h>
 #include "txtfind.h"
-#define LINE 256
 
 int main()
 {
-    char buffer_line[LINE];
-    char buffer_word[WORD];
-    char key_word[WORD];
-    char char_command[2];
+    char buffer_line[LINE] = {"\0"};
+    char buffer_word[WORD] = {"\0"};
+    char key_word[WORD] = {"\0"};
+    char char_command[2] = {"\0"};
     int place_in_string = 0;
-    int different_letters = 0;
-    char ch = 'a';
+    
+    fgets(buffer_line,LINE, stdin);
+    place_in_string = get_word_string(buffer_line, buffer_word, place_in_string);
+    strcpy(key_word, buffer_word);
+    place_in_string = get_word_string(buffer_line, buffer_word, place_in_string);
+    strcpy(char_command, buffer_word);
 
-    //    fgets(text,LINE,stdin);
-
-
-    get_line_file(buffer_line);
-    place_in_string = get_word_string(buffer_line, key_word, place_in_string);
-    get_word_string(buffer_line, char_command, place_in_string);
-
-    // printf("key word = %s\nchar command = %s\n", key_word, char_command);
-
-    ch = fgetc(stdin);
+    fgetc(stdin);
 
     if (char_command[0] == 'a')
     {
-        different_letters = 0;
-        while(ch!=EOF)
+        while(fgets(buffer_line,LINE, stdin)!=NULL)
         {
-            ch = get_line_file(buffer_line);
-            // printf("buffer = %s\n", buffer_line);
             place_in_string = 0;
             while(place_in_string<=strlen(buffer_line))
             {
                 place_in_string = get_word_string(buffer_line, buffer_word, place_in_string);
                 if(sub(key_word, buffer_word) == TRUE)
                 {
-                    printf("%s\n", buffer_line);
+                    printf("%s", buffer_line);
                     break;
                 }
             }
-
         } 
-
     }
     else if (char_command[0] == 'b')
     {
-        char ch = 'a';
-        different_letters = 1;
-        while(ch!=EOF)
+        while(fgets(buffer_line,LINE, stdin)!=NULL)
         {
-            ch = get_word_file(fp, buffer_word);
-            if(is_similar(key_word, buffer_word, different_letters))
+            place_in_string = 0;
+            while(place_in_string<=strlen(buffer_line))
             {
-                printf("%s\n", buffer_word);
+                place_in_string = get_word_string(buffer_line, buffer_word, place_in_string);
+                if(is_similar(key_word, buffer_word) == TRUE)
+                {
+                    printf("%s\n", buffer_word);
+                }
             }
+
         }        
     }
-    fclose(fp);
+    printf("\n");
 }
 
 
@@ -81,23 +73,21 @@ char get_line_file(char* buffer_line)
     return ch;
 }
 
-int get_word_string(char* buffer_line, char* buffer_word, int place_in_string)
+int get_word_string(char* line, char* word, int place_in_string)
 {
     int i = place_in_string;
     int j = 0;
     char ch = 'a';
-    memset(buffer_word, '\0', WORD);
+    memset(word, '\0', WORD);
 
-    while ((ch!=' ')&&(ch!='\t')&&(i<=strlen(buffer_line)))
+    while ((ch!=' ')&&(ch!='\t')&&(ch!='\r')&&(ch!='\n')&&(i<=strlen(line)))
     {
-        ch = *(buffer_line+i);
-        *(buffer_word+j) = ch;  
+        ch = *(line+i);
+        *(word+j) = ch;  
         i++;
         j++;
     }
-    *(buffer_word + (j-1)) = '\0';
-    // printf("%s, len = %ld, j = %d\n", buffer_word, strlen(buffer_word), j);
-    
+    *(word + (j-1)) = '\0';
     return i;
 }
 
@@ -125,20 +115,16 @@ int sub(char* source, char* word_under_test)
 
     while(*(word_under_test+j)!='\0')
     {
-        // printf("in while\n");
         if (*(source)==*(word_under_test+j))
         {
-            // printf("qw\n");
             while(i<strlen(source))
             {
                 if (*(source+i)!=*(word_under_test+(j+i)))
                 {
-                    // printf("FULSE IN WHILE\n");
                     return FULSE;
                 }
                 i++;
             }
-            // printf("TRUE\n");
             return TRUE;
         }
         else if (*(source)!=*(word_under_test+j))
@@ -146,15 +132,15 @@ int sub(char* source, char* word_under_test)
             j++;
         }
     }
-    // printf("FULSE OUT WHILE\n");
     return FULSE;    
 }
 
 
-int is_similar(char* source, char* word_under_test, int different_letters)
+int is_similar(char* source, char* word_under_test)
 {
     int i=0;
     int j=0;
+    int different_letters = 1;
     int count_different_letters = 0;
 
     while(*(word_under_test+j)!='\0')
