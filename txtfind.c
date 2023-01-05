@@ -33,7 +33,6 @@ int main()
                 }
             }
         } 
-        printf("\n");
     }
     else if (char_command[0] == 'b')
     {
@@ -49,8 +48,7 @@ int main()
                 }
             }
 
-        } 
-        // printf("\n");       
+        }       
     }
     
 }
