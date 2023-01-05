@@ -33,7 +33,7 @@ int main()
                     break;
                 }
             }
-        } 
+        }printf("\n"); 
     }
     else if (char_command[0] == 'b')
     {
